@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { colorSchemes, dummyThumbnails, type AspectRatio, type IThumbnail, type ThumbnailStyle } from "../assets/assets";
+import { Sparkles, Sliders } from "lucide-react";
+import { colorSchemes, contentGoals, dummyThumbnails, videoLengths, type AspectRatio, type ContentGoal, type IThumbnail, type PlatformSelect, type ThumbnailStyle, type VideoLength } from "../assets/assets";
 import SoftBackdrop from "../components/SoftBackdrop";
-import { button } from "motion/react-client";
 import AspectRatioSelector from "../components/AspectRatioSelector";
 import StyleSelector from "../components/StyleSelector";
 import ColorSchemeSelector from "../components/ColorSchemeSelector";
 import PreviewPanel from "../components/PreviewPanel";
+import PlatformSelector from "../components/PlatformSelector";
+import VideoLengthSelector from "../components/VideoLengthSelector";
+import ContentGoalSelector from "../components/ContentGoalSelector";
 
 const Generate = () => {
   const { id } = useParams();
@@ -17,10 +20,20 @@ const Generate = () => {
   const [loading, setLoading] = useState(false);
 
   const [aspectRatio , setAspectRatio] = useState<AspectRatio>("16:9");
+  const [platform , setPlatform] = useState<PlatformSelect>("Youtube");
+  const [videoLength , setVideoLength] = useState<VideoLength>(videoLengths[0]);
+  const [contentGoal, setContentGoal] = useState<ContentGoal>(contentGoals[0]);
   const [colorSchemeId , setColorSchemeId] = useState<string>(colorSchemes[0].id);
   const [style , setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
 
   const [styleDropdownOpen , setStyleDropdownOpen] = useState(false);
+
+  useEffect( () => {
+     if(platform === 'Instagram'){
+    setAspectRatio('9:16')
+  }
+  } ,[platform])
+ 
 
   const handleGenerate = () => {
 
@@ -56,46 +69,57 @@ const Generate = () => {
               <div className="p-6 rounded-2xl bg-white/8 border border-white/12 shadow-xl space-y-6">
                 <div>
                   <h2 className="text-xl font-bold text-zinc-100">
-                    Create Your Thumbnail
+                    Create Your Content Pack
                   </h2>
-                  <p className="text-sm text-zinc-400">
-                    Describe your vision and let AI bring it to life
+                  <p className="text-xs text-zinc-400 w-full mt-1">
+                   Enter video topic and generate a full SEO-friendly pack.
                   </p>
                 </div>
 
                 <div className="space-y-5">
                   {/* TITLE INPUT */}
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium">
-                      Title or Topic
+                    <label className="block text-sm font-medium text-zinc-200 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-pink-400" />
+                      <span>Video Topic</span>
                     </label>
                     <input
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       maxLength={100}
-                      placeholder="e.g. , 10 Tips for Better Sleep"
+                      placeholder="e.g. Learn React in 7 Days"
                       className="w-full px-4 py-3 rounded-1g border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
                     />
                     <div className="flex justify-end">
                         <span className="text-xs text-zinc-400">{title.length}/100</span>
                     </div>
                   </div>
-                  {/* AspectRatioSelector */}
-                  <AspectRatioSelector value={aspectRatio} onChange={setAspectRatio}/>
 
+                  {/* PlatForm Selector */}
+                  <PlatformSelector value={platform} onChange={setPlatform}/>
+
+                  {/* AspectRatioSelector */}
+                  <AspectRatioSelector value={aspectRatio} onChange={setAspectRatio} platformSelected={platform}/>
+
+                  {/* Video Lenth Selector */}
+                  <VideoLengthSelector value={videoLength} onChange={setVideoLength}/>
+
+                  {/* Content Goal Selector */}
+                  <ContentGoalSelector value={contentGoal} onChange={setContentGoal}/>
                     {/* styleSelector */}
-                  <StyleSelector value={style} onChange={setStyle} isOpen={styleDropdownOpen} setIsOpen={setStyleDropdownOpen} />
+                  {/* <StyleSelector value={style} onChange={setStyle} isOpen={styleDropdownOpen} setIsOpen={setStyleDropdownOpen} /> */}
 
                     {/* ColorSchemeSelector */}
-                    <ColorSchemeSelector value={colorSchemeId} onChange={setColorSchemeId}/>
+                    {/* <ColorSchemeSelector value={colorSchemeId} onChange={setColorSchemeId}/> */}
 
                     {/* DETAILS */}
                     <div className="space-y-2">
-                        <label className="block text-sm font-medium">
-                            Additional Prompts <span className="text-zinc-400 text-xs">(optional)</span>
+                        <label className="block text-sm font-medium text-zinc-200 flex items-center gap-2">
+                            <Sliders className="w-4 h-4 text-pink-400" />
+                            <span>Additional Prompts</span> <span className="text-zinc-400 text-xs font-normal">(optional)</span>
                         </label>
-                        <textarea value={additionalDetails} onChange={(e) => setAdditionalDetails(e.target.value)} rows={3} placeholder="Add any specific elements, mood , or style preferences ... " className="w-full px-4 py-3 rounded-lg border border-white/10 bg-white/6 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"/>
+                        <textarea value={additionalDetails} onChange={(e) => setAdditionalDetails(e.target.value)} rows={3} placeholder="Mention key points, CTA, special instructions , audience , or any extra context..." className="w-full px-4 py-3 rounded-lg border border-white/10 bg-white/6 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"/>
                     </div>
                 </div>
 
@@ -104,7 +128,7 @@ const Generate = () => {
                   <button onClick={handleGenerate}
                     className="text-[15px] w-full py-3.5 rounded-xl font-medium bg-linear-to-b from-pink-500 to-pink-600 hover:from-pink-700 
                     disabled:cursor-not-allowed transition-colors">
-                    {loading ? "Generating..." : "Generate Thumbnail"}
+                    {loading ? "Generating..." : "Generate Pack"}
                   </button>
                 )}
               </div>

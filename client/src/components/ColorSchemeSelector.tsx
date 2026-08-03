@@ -1,4 +1,5 @@
 
+import { Palette } from 'lucide-react';
 import { colorSchemes } from "../assets/assets";
 
 
@@ -6,7 +7,10 @@ const ColorSchemeSelector = ({value , onChange} : { value : string ; onChange : 
 
   return (
     <div className="space-y-3">
-       <label className="block font-medium text-zinc-200 text-sm">Color Scheme</label>
+       <label className="block font-medium text-zinc-200 text-sm flex items-center gap-2">
+         <Palette className="w-4 h-4 text-pink-400" />
+         <span>Color Scheme</span>
+       </label>
 
        <div className="grid grid-cols-6 gap-3">
         {colorSchemes.map( (scheme) => (

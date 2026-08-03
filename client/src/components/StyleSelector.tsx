@@ -1,7 +1,6 @@
 import type React from "react";
 import { thumbnailStyles, type ThumbnailStyle } from "../assets/assets"
-import { CpuIcon, ImageIcon, PenToolIcon, SquareIcon, SparkleIcon, ChevronDownIcon } from "lucide-react";
-import { div } from "motion/react-client";
+import { CpuIcon, ImageIcon, PenToolIcon, SquareIcon, SparkleIcon, ChevronDownIcon, Wand2 } from "lucide-react";
 
 
 const StyleSelector = ({value , onChange , isOpen , setIsOpen} :
@@ -25,7 +24,10 @@ const StyleSelector = ({value , onChange , isOpen , setIsOpen} :
 
   return (
     <div className="relative space-y-3 dark">
-      <label className="block text-sm text-zinc-200 font-medium" >Thumbnail Style</label>
+      <label className="block text-sm text-zinc-200 font-medium flex items-center gap-2">
+        <Wand2 className="w-4 h-4 text-pink-400" />
+        <span>Thumbnail Style</span>
+      </label>
 
 
       <button type="button" onClick={()=> setIsOpen(!isOpen)}

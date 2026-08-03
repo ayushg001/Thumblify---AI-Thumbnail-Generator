@@ -6,8 +6,17 @@ import thumb_5 from "./thumb_5.jpg";
 import thumb_6 from "./thumb_6.jpg";
 import thumb_7 from "./thumb_7.jpg";
 
-export const aspectRatios = ["16:9", "1:1", "9:16"];
+export const aspectRatios = ["16:9", "9:16"];
 export type AspectRatio = (typeof aspectRatios)[number];
+
+export const platformSelect = ['Youtube' , 'Instagram'];
+export type PlatformSelect = (typeof platformSelect)[number];  //Give me the type of any element inside this array.
+
+export const videoLengths = ["< 1 min", "1-5 mins", "5-10 mins","10-15 mins", "15-30 mins", "30+ mins"];
+export type VideoLength = (typeof videoLengths)[number];
+
+export const contentGoals = ["Views & CTR", "Educate", "Entertain", "Promote", "Build Brand"];
+export type ContentGoal = (typeof contentGoals)[number];
 
 export const thumbnailStyles = ["Bold & Graphic", "Minimalist", "Photorealistic", "Illustrated", "Tech/Futuristic"];
 export type ThumbnailStyle = (typeof thumbnailStyles)[number];
