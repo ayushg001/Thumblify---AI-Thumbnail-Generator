@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema<IUser>({
         required : true ,
         trim : true,
         unique: true
+    },
+     password : {
+        type : String ,
+        required : true,
     }
 } , {timestamps : true});     // timestamps will automatically create the 'Created_At' field
 
