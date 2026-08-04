@@ -19,12 +19,12 @@ const ThumbnailSchema = new mongoose.Schema<IThumbnail>(
         userId: { type: String, ref: 'User', required: true },
         createdBy: { type: String, ref: 'User', required: true },
         videoTopic: { type: String, required: true, trim: true },
-        platform: { type: String, required: true, enum: ['youtube', 'instagram'] },
+        platform: { type: String, required: true, lowercase: true, trim: true },
         aspectRatio: { type: String, default: '' },
         videoLength: { type: String, default: '' },
         contentGoal: { type: String, default: '' },
         additionalDetails: { type: String, default: '' },
-        generatedContent : {type : mongoose.Schema.Types.Mixed , required : true }
+        generatedContent: { type: mongoose.Schema.Types.Mixed, required: true }
     },
     {
         timestamps: true

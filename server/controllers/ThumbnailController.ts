@@ -2,85 +2,109 @@ import { Request, Response } from 'express';
 import Thumbnail from '../models/Thumbnail.js';
 import ai from '../config/ai..js';
 import { buildPromptForPlatform, GenerateContentInput } from '../helpers/promptBuilder.js';
-import { json } from 'node:stream/consumers';
 
 export const generateThumbnail = async (req: Request, res: Response) => {
-    try{
-
-        const {userId} = req.session;
-        if(!userId){
-            return res.status(401).json({ message : 'Unauthorized. User session not found.' });
+    try {
+        const { userId } = req.session;
+        if (!userId) {
+            return res.status(401).json({ message: 'Unauthorized. User session not found.' });
         }
 
-        const { videoTopic , platform , aspectRatio , videoLength , contentGoal , additionalDetails} = req.body;
+        const { videoTopic, platform, aspectRatio, videoLength, contentGoal, additionalDetails } = req.body;
 
-        //input validation
-        if(!videoTopic || typeof videoTopic !== 'string' || !videoTopic.trim()){
-            return res.status(400).json({message : 'VideoTopic is required.'});
+        // Input validation
+        if (!videoTopic || typeof videoTopic !== 'string' || !videoTopic.trim()) {
+            return res.status(400).json({ message: 'VideoTopic is required.' });
         }
 
-        const inputData : GenerateContentInput = {
-                videoTopic : videoTopic.trim(),
-                platform : platform,
-                aspectRatio : aspectRatio || (platform === 'instagram' ? '9:16' : '16:9'),
-                videoLength : videoLength || "",
-                contentGoal : contentGoal || '',
-                additionalDetails : additionalDetails || ''
+        // Normalize platform to lowercase ('youtube' or 'instagram')
+        const normalizedPlatform = (platform || 'youtube').toString().toLowerCase().trim();
+
+        const inputData: GenerateContentInput = {
+            videoTopic: videoTopic.trim(),
+            platform: normalizedPlatform,
+            aspectRatio: aspectRatio || (normalizedPlatform === 'instagram' ? '9:16' : '16:9'),
+            videoLength: videoLength || '',
+            contentGoal: contentGoal || '',
+            additionalDetails: additionalDetails || ''
         };
 
-         // Construct dynamic platform-specific Gemini prompt
-         const prompt = buildPromptForPlatform(inputData);
+        console.log('[Generate] Input:', JSON.stringify(inputData));
 
-         // Call Gemini Text Model  
-         const modelName = 'gemini-flash-latest';
+        // Build the prompt
+        const prompt = buildPromptForPlatform(inputData);
 
-         const aiResponse : any = await ai.models.generateContent({
-            model : modelName,
-            contents : [prompt],
-            config : {
-                responseMimeType : 'application/json',
-                temperature : 0.7
+        console.log('[Generate] Prompt first 120 chars:', prompt.slice(0, 120));
+
+        // Call Gemini with a fresh client instance to avoid implicit caching
+        // Creating a new GoogleGenAI instance per request ensures no shared state
+        const { GoogleGenAI } = await import('@google/genai');
+        const freshAi = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
+
+        const aiResponse: any = await freshAi.models.generateContent({
+            model: 'gemini-flash-latest',
+            contents: [prompt],
+            config: {
+                responseMimeType: 'application/json',
+                temperature: 0.9
             }
-         });
+        });
 
-          const rawText = aiResponse.text || aiResponse?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const rawText = aiResponse.text || aiResponse?.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (!rawText) {
             throw new Error('Failed to retrieve content from Gemini AI.');
         }
 
-        
+        console.log('[Generate] Gemini raw response (first 200 chars):', rawText.slice(0, 200));
+
         // Clean any potential markdown wrapping and parse JSON
         const cleanedJsonText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
         let generatedContent: Record<string, any>;
 
-        try{
+        try {
             generatedContent = JSON.parse(cleanedJsonText);
-        } catch (jsonErr){
-            console.error("Error parsing JSON from Gemini Response :"  , rawText);
-            throw new Error('Gemini response was not valid Json');
+        } catch (jsonErr) {
+            console.error('[Generate] JSON parse error. Raw text:', rawText);
+            throw new Error('Gemini response was not valid JSON');
         }
-         
-        const videoRecord = await  Thumbnail.create({
+
+        // Log the key fields to verify uniqueness
+        console.log('[Generate] Generated titles/title:',
+            generatedContent.youtubeTitles?.[0] || generatedContent.reelTitle || 'N/A'
+        );
+
+        const videoRecord = await Thumbnail.create({
             userId,
-            createdBy : userId,
-            videoTopic : inputData.videoTopic,
-            platform : inputData.platform,
-            aspectRatio : inputData.aspectRatio,
-            videoLength : inputData.videoLength ,
-            contentGoal : inputData.contentGoal ,
-            additionalDetails : inputData.additionalDetails,
+            createdBy: userId,
+            videoTopic: inputData.videoTopic,
+            platform: normalizedPlatform,
+            aspectRatio: inputData.aspectRatio,
+            videoLength: inputData.videoLength,
+            contentGoal: inputData.contentGoal,
+            additionalDetails: inputData.additionalDetails,
             generatedContent
-        })
+        });
+
+        console.log('[Generate] DB record created:', videoRecord._id);
 
         return res.status(201).json({
-            message : 'Content pack generated successfully',
-            videoRecord : videoRecord
-        })
-    }
-    catch (error: any) {
-        console.error('Error in generateThumbnail controller:', error);
-        return res.status(500).json({ message: error.message || 'Internal server error' });
+            message: 'Content pack generated successfully',
+            videoRecord
+        });
+    } catch (error: any) {
+        console.error('[Generate] Error:', error.message || error);
+
+        const status =
+            error.status ||
+            error.code ||
+            error.response?.status ||
+            500;
+
+        return res.status(status).json({
+            message: error.message,
+            details: error.error || error.response?.data
+        });
     }
 };
 

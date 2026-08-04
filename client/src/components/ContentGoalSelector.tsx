@@ -11,7 +11,7 @@ const ContentGoalSelector = ({ value, onChange }: { value: ContentGoal; onChange
 
             <div className="flex flex-wrap gap-2.5">
                 {contentGoals.map((content) => {
-                    const selected = value === content;
+                    const selected = value === content || value?.toLowerCase() === content.toLowerCase();
 
                     return (
                         <button

@@ -4,11 +4,13 @@ import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { featuresData } from "../data/features";
 import type { IFeature } from "../types";
+import { useNavigate } from "react-router-dom";
 
 export default function FeaturesSection() {
+    const navigate = useNavigate();
     return (
         <div id="features" className="px-4 md:px-16 lg:px-24 xl:px-32">
-            <SectionTitle text1="Features" text2="Why use our generator?" text3="Create stunning thumbnails that get clicks, without the hassle." />
+            <SectionTitle text1="Features" text2="Why use our content generator?" text3="Create complete SEO packs that rank your videos higher and drive massive views." />
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-4 mt-16 px-6">
                 {featuresData.map((feature: IFeature, index: number) => (
                     <motion.div key={index} className={`${index === 1 ? 'p-px rounded-[13px] bg-linear-to-br from-pink-600 to-slate-800' : ''}`}
@@ -38,7 +40,7 @@ export default function FeaturesSection() {
                     viewport={{ once: true }}
                     transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
                 >
-                   Our AI understands what makes a video go viral and designs thumbnails accordingly.
+                   Our AI understands algorithm trends and crafts complete video packs optimized for search & engagement.
                 </motion.p>
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-8 gap-10">
                     <motion.div className="md:col-span-2"
@@ -56,12 +58,12 @@ export default function FeaturesSection() {
                         transition={{ delay: 0.15, type: "spring", stiffness: 320, damping: 70, mass: 1 }}
                     >
                         <img src="/assets/features-showcase-2.png" alt="features showcase" width={1000} height={500} className="hover:-translate-y-0.5 transition duration-300" />
-                        <h3 className="text-[24px]/7.5 text-slate-300 font-medium mt-6">Boost your views with AI-optimized designs</h3>
-                        <p className="text-slate-300 mt-2">Stop guessing and start ranking. Our AI creates proven to capture attention.</p>
-                        <a href="https://prebuiltui.com" className="group flex items-center gap-2 mt-4 text-pink-600 hover:text-pink-700 transition">
+                        <h3 className="text-[24px]/7.5 text-slate-300 font-medium mt-6">Boost your views with AI-optimized content</h3>
+                        <p className="text-slate-300 mt-2">Stop guessing and start ranking. Get proven titles, captions, and script outlines.</p>
+                        <button onClick={() => navigate('/generate')} className="group flex items-center gap-2 mt-4 text-pink-600 hover:text-pink-700 transition cursor-pointer">
                             Start generating free
                             <ArrowUpRight className="size-5 group-hover:translate-x-0.5 transition duration-300" />
-                        </a>
+                        </button>
                     </motion.div>
                 </div>
             </div>

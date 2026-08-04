@@ -41,21 +41,39 @@ export interface ThumbnailRequest {
     additionalDetails?: string;
 }
 
-export interface IThumbnail {
-    _id: string;
-    userId: string;
+export interface IScriptPoint {
+    time: string;
     title: string;
-    description?: string;
-    style: "Bold & Graphic" | "Tech/Futuristic" | "Minimalist" | "Photorealistic" | "Illustrated";
-    aspect_ratio?: "16:9" | "1:1" | "9:16";
-    color_scheme?: "vibrant" | "sunset" | "forest" | "neon" | "purple" | "monochrome" | "ocean" | "pastel";
-    text_overlay?: boolean;
-    image_url?: string;
-    prompt_used?: string;
+}
+
+export interface IContentPackData {
+    titles: string[];
+    description: string;
+    tags: string[];
+    thumbnailPrompt: string;
+    scriptPoints: IScriptPoint[];
+}
+
+export interface PreviewPanelProps {
+    generatedData?: any;
+    isLoading?: boolean;
+}
+
+export interface IContentPack {
+    _id: string;
+    userId?: string;
+    createdBy?: string;
+    videoTopic: string;
+    title?: string;
+    platform: string;
+    aspectRatio?: string;
+    videoLength?: string;
+    contentGoal?: string;
+    additionalDetails?: string;
     user_prompt?: string;
-    isGenerating?: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
+    generatedContent?: Record<string, any>;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 }
 
 export interface IUser {
@@ -68,111 +86,126 @@ export interface IUser {
 
 export const dummyThumbnails = [
     {
-        _id: "69451ff3c9ea67e4c930f6a6",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Top smartwatch under 1499",
-        style: "Bold & Graphic",
-        aspect_ratio: "16:9",
-        color_scheme: "vibrant",
-        text_overlay: true,
-        image_url: thumb_1,
-        prompt_used: "add multiple smartwatches ",
-        user_prompt: "add multiple smartwatches ",
-        isGenerating: false,
-        createdAt: "2025-12-19T09:50:43.727Z",
-        updatedAt: "2025-12-19T09:51:07.874Z",
-        __v: 0,
+        _id: "6a71f754abc35be0459b7418",
+        userId: "6a6e17b046159f0c4ea977a6",
+        createdBy: "6a6e17b046159f0c4ea977a6",
+        videoTopic: "best earbuds under 2500rs in india",
+        platform: "youtube",
+        aspectRatio: "16:9",
+        videoLength: "5-10 mins",
+        contentGoal: "Educate",
+        additionalDetails: "want to tell best earbuds to people that are under budget in 2500rs taht produces balance sound",
+        generatedContent: {
+            youtubeTitles: [
+                "Top 5 Best Earbuds Under ₹2500 in 2024! (Balanced Sound King?)",
+                "Don't Buy TWS Earbuds Under ₹2500 Before Watching THIS!",
+                "Ultimate Budget TWS Guide: Best Earbuds Under ₹2500 for Music Lovers",
+                "Best Earbuds Under 2500 Rupees in India (Real Sound & Mic Test!)",
+                "Best Balanced Sound Earbuds Under ₹2500 | Audiophile Quality on a Budget"
+            ],
+            description: `Looking for the best TWS earbuds under ₹2500 in India with clean, balanced sound, crisp vocals, and punchy bass? In this video, we test and rank the top budget wireless earbuds that offer near-audiophile audio tuning without breaking the bank!
+
+Most budget earbuds dump excess bass to cover up cheap drivers, but we tested 10+ models to find the rare pairs that deliver true instrument separation, clear vocals, low latency, and great battery life.
+
+⏱️ TIMESTAMPS:
+0:00 - The Problem with Budget Earbuds
+0:45 - What is 'Balanced Sound'?
+1:30 - #3 Best Value Earbuds
+3:15 - #2 Best Battery & Feature Pair
+5:30 - #1 THE KING of Balanced Sound
+7:30 - Mic & Latency Test Comparison
+8:45 - Final Verdict & Buying Advice
+
+📌 KEY FEATURES WE EVALUATED:
+- Driver tuning and frequency response (Clean highs, warm mids, tight bass)
+- AAC/SBC Codec performance
+- Call quality & ENC microphone performance
+- Battery backup and fast charging
+
+💬 Which pair are you picking? Drop your thoughts or questions in the comments below!
+
+🔔 Subscribe to the channel for more tech & tutorial videos!
+
+#BestEarbudsUnder2500 #TWSEarbuds #BudgetEarbuds #AudioTech #EarbudsIndia #BalancedSound #TechReviews`,
+            tags: [
+                "best earbuds under 2500",
+                "best tws under 2500",
+                "best earbuds under 2500 in india",
+                "top tws under 2500",
+                "balanced sound earbuds under 2500",
+                "best wireless earbuds 2024",
+                "best budget earbuds india",
+                "earbuds under 2500 with good mic",
+                "best earbuds for music under 2500",
+                "best sound quality tws under 2500",
+                "oppo enco buds 2",
+                "realme tws under 2500",
+                "budget tws sound test"
+            ],
+            thumbnailPrompt: "A highly engaging 16:9 YouTube thumbnail scene featuring an expressive Indian male tech reviewer with a shocked, open-mouthed expression pointing towards two sleek TWS earbud charging cases. Cinematic dark background with dynamic neon blue and warm orange rim light accents. Floating high-resolution 3D renders of translucent earbud drivers showing sound wave visual effects behind them. Minimalist dark wooden tech desk setup in shallow depth of field bokeh. High-contrast bold yellow and white text overlay reading 'STOP! BEST ₹2500 TWS'. Eye-level angle, ultra-sharp detail, high visual contrast, maximum clickability aesthetic.",
+            videoScript: {
+                Hook: "Stop wasting your money on bass-heavy, muddy-sounding earbuds! If you are looking for clean, crisp, and truly balanced sound under 2500 rupees in India, 90% of YouTube recommendations are giving you cheap, bass-boosted junk. Today, I'm revealing the top earbuds that actually deliver audiophile-grade clarity on a tight budget.",
+                Introduction: "Welcome back to the channel! Finding True Wireless Stereo (TWS) earbuds under ₹2500 in India is super easy—there are hundreds of options. But finding ones with *balanced sound*—where vocals shine, acoustic instruments are distinct, and bass punchy without overwhelming the track—is almost impossible. Over the past month, we tested over 10 popular TWS earbuds specifically analyzing sound signatures, mic performance, gaming latency, and long-term comfort. Let's break down the best options you can buy right now.",
+                "Point 1": "Why 'Balanced Sound' Matters Under ₹2500. Most budget manufacturers artificially boost low frequencies (bass) to hide cheap audio drivers. The result? Muddy vocals and missing background instruments in your favorite Indian and Pop tracks. To get true balanced sound, we looked for earbuds with titanium drivers, customized EQ profiles via app support, and AAC codec integration that keeps treble crisp, mids warm, and bass tight.",
+                "Point 2": "The Contenders: Spot #3 and Spot #2 Breakdown. At #3, we have the Realme Buds T300—great overall package with decent ANC, deep software customization, and 30-hour battery, but slightly elevated bass. At #2, the Nord Buds 2r—incredible build quality, dual microphones with ENC for clear calls, and a very neutral 'Balanced' EQ preset straight out of the box that makes acoustic tracks and podcasts sound rich.",
+                "Point 3": "The Undisputed King of Sound Quality (#1 Pick). Coming in at #1 is the Oppo Enco Buds 2. Equipped with 10mm titanium composite drivers and expert acoustic tuning, these offer the absolute cleanest sound stage under 2500 rupees. Vocals sound intimate, high frequencies never distort even at 90% volume, and bass is tight and punchy without leaking into the mid-range. Plus, fast charging and 80ms low latency gaming mode make it an unbeatable package.",
+                Summary: "To wrap it up: If you only care about brain-rattling bass, you have plenty of cheap options. But if you care about music depth, clear phone calls, vocal accuracy, and listening comfort during long sessions, the Oppo Enco Buds 2 and Nord Buds 2r are the ultimate budget picks under ₹2500 in India.",
+                CTA: "Which sound profile do you prefer—flat balanced sound or heavy bass? Let me know in the comments down below! If this guide helped you make a decision, hit that Like button, share it with a friend looking for budget earbuds, and Subscribe for more real, no-BS tech reviews. Check the description for the best buying links!"
+            }
+        },
+        createdAt: "2026-08-04T14:29:40.460Z",
+        updatedAt: "2026-08-04T14:29:40.460Z",
+        __v: 0
     },
     {
-        _id: "69451d5bc9ea67e4c930f698",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Learn How to make 100k in 10 days",
-        style: "Bold & Graphic",
-        aspect_ratio: "16:9",
-        color_scheme: "vibrant",
-        text_overlay: true,
-        image_url: thumb_2,
-        prompt_used: "add cash images graph and etc",
-        user_prompt: "add cash images graph and etc",
-        isGenerating: false,
-        createdAt: "2025-12-19T09:39:39.971Z",
-        updatedAt: "2025-12-19T09:40:05.084Z",
-        __v: 0,
-    },
-    {
-        _id: "6943fb409fa048268a04f105",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Learn NextJS 16 with a Project",
-        style: "Bold & Graphic",
-        aspect_ratio: "16:9",
-        color_scheme: "vibrant",
-        text_overlay: true,
-        image_url: thumb_3,
-        prompt_used: "add human with laptop",
-        user_prompt: "add human with laptop",
-        isGenerating: false,
-        createdAt: "2025-12-18T13:01:52.205Z",
-        updatedAt: "2025-12-18T13:02:13.766Z",
-        __v: 0,
-    },
-    {
-        _id: "6943e8c763d3d5ec3e4f5c8c",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Learn how to use Photoshop",
-        style: "Bold & Graphic",
-        aspect_ratio: "16:9",
-        color_scheme: "vibrant",
-        text_overlay: true,
-        image_url: thumb_4,
-        prompt_used: "",
-        user_prompt: "",
-        isGenerating: false,
-        createdAt: "2025-12-18T11:43:03.281Z",
-        updatedAt: "2025-12-18T11:43:24.982Z",
-        __v: 0,
-    },
-    {
-        _id: "6943e2220611d25b40e529b3",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Make Burger in 30 min",
-        style: "Photorealistic",
-        aspect_ratio: "1:1",
-        color_scheme: "vibrant",
-        text_overlay: true,
-        image_url: thumb_5,
-        isGenerating: false,
-        createdAt: "2025-12-18T11:14:42.466Z",
-        updatedAt: "2025-12-18T11:15:04.260Z",
-        __v: 0,
-    },
-    {
-        _id: "6943e04c0611d25b40e529ac",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Learn Full Stack Development",
-        style: "Bold & Graphic",
-        aspect_ratio: "16:9",
-        color_scheme: "vibrant",
-        text_overlay: true,
-        image_url: thumb_6,
-        isGenerating: false,
-        createdAt: "2025-12-18T11:06:52.555Z",
-        updatedAt: "2025-12-18T11:07:18.715Z",
-        __v: 0,
-    },
-    {
-        _id: "6943d68d5b9fed7040154a0f",
-        userId: "6942b3bd2a93a220baa331b3",
-        title: "Learn ReactJS in 2 hours",
-        style: "Bold & Graphic",
-        aspect_ratio: "16:9",
-        color_scheme: "ocean",
-        text_overlay: true,
-        image_url: thumb_7,
-        isGenerating: false,
-        createdAt: "2025-12-18T10:25:17.135Z",
-        updatedAt: "2025-12-18T10:25:41.648Z",
-        __v: 0,
-    },
+        _id: "6a71f4776446e38b2b7fe650",
+        userId: "6a6e17b046159f0c4ea977a6",
+        createdBy: "6a6e17b046159f0c4ea977a6",
+        videoTopic: "tech news of last 24 hrs in india",
+        platform: "instagram",
+        aspectRatio: "9:16",
+        videoLength: "1-5 mins",
+        contentGoal: "Promote",
+        additionalDetails: "want to tech news in the form of intsa reel , mainly it will include news related to  smartphones",
+        generatedContent: {
+            reelTitle: "🚨 3 CRAZY Smartphone Launches in India Today! (Don't Buy Yet 🛑)",
+            caption: `Stop! 🚨 If you're planning to buy a new smartphone in India this week, you NEED to watch this first! Here is your daily 24-hour Tech Recap 🇮🇳📱
+
+1️⃣ 🔥 Huge Flagship Launch Confirmed: A brand new mid-range killer is dropping sooner than expected!
+2️⃣ ⚡ Price Cut Alert: Popular 5G phones just got massive discounts across Indian e-commerce platforms.
+3️⃣ ⚙️ OS Update Rollout: Android 14 updates starting for budget segment users today!
+
+Which phone are you currently using? Let me know in the comments! 👇
+
+📌 SAVE this Reel to stay updated with daily tech news!
+📤 SHARE with a friend who needs a new phone!`,
+            hashtags: [
+                "#TechNewsIndia",
+                "#SmartphonesIndia",
+                "#TechReels",
+                "#MobileNews",
+                "#TechUpdates",
+                "#IndiaTech",
+                "#SmartphoneLaunch",
+                "#BestPhone2024",
+                "#5GSmartphones",
+                "#GadgetNews",
+                "#TechDaily",
+                "#InstaTech",
+                "#AndroidIndia",
+                "#TechTips"
+            ],
+            thumbnailPrompt: "A high-energy, vertical 9:16 Instagram thumbnail featuring a futuristic tech creator holding the latest metallic sleek smartphone with glowing neon yellow and vibrant blue accent lights. Dynamic low-angle shot, studio background with soft bokeh tech circuit patterns. Bold, high-contrast 3D text overlay reading 'TODAY'S TECH RECAP 🇮🇳' with a shock expression face cut-out. Clean, cinematic, hyper-detailed photography.",
+            shortScript: {
+                Hook: "[Visual: Quick jump cut holding two latest smartphones with warning emojis on screen] Stop scrolling! If you're buying a smartphone in India right now, wait 24 hours! Here’s what just went down today.",
+                "Main Content": "First up, a major brand just teased its newest 5G killer coming to India with a snapdragon flagship chip under 25K! Second, major e-commerce platforms quietly dropped prices on top-selling camera phones by up to 4,000 Rupees today. And third, a massive software update is rolling out right now fixing battery drain issues for millions of budget phone users in India.",
+                "Call To Action": "Which of these updates shocked you the most? Drop your current phone model in the comments below, hit save, and share this with your tech friend!"
+            }
+        },
+        createdAt: "2026-08-04T14:17:27.542Z",
+        updatedAt: "2026-08-04T14:17:27.542Z",
+        __v: 0
+    }
 ];
 
 export const yt_html = `

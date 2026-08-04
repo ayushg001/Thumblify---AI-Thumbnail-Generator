@@ -11,7 +11,7 @@ const VideoLengthSelector = ({ value, onChange }: { value: VideoLength; onChange
 
             <div className="flex flex-wrap gap-2.5">
                 {videoLengths.map((length) => {
-                    const selected = value === length;
+                    const selected = value === length || value?.toLowerCase() === length.toLowerCase();
 
                     return (
                         <button

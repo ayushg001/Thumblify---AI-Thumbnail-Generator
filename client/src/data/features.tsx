@@ -3,18 +3,17 @@ import type { IFeature } from "../types";
 export const featuresData: IFeature[] = [
     {
         icon: "/assets/zap-icon.svg",
-        title: "Smart Analysis",
-        description: "Our AI analyzes video content to suggest the most clickable concepts.",
+        title: "Viral SEO Titles",
+        description: "AI generates highly clickable, search-optimized titles designed to maximize CTR on YouTube & Instagram.",
     },
-      {
+    {
         icon: "/assets/thumb-icon.svg",
-        title: "Eye-Catching Designs",
-        description: "Generate vibrant, high-contrast thumbnails that stand out in the feed.",
+        title: "Descriptions & Hashtags",
+        description: "Get keyword-rich video descriptions, structured timestamps, and target hashtags automatically generated.",
     },
-      {
+    {
         icon: "/assets/zap-icon.svg",
-        title: "Fully Editable",
-        description: "Get fully layered designs you can ask tweak to perfection if needed.",
+        title: "Scripts & Prompts",
+        description: "Receive full script outlines, attention-grabbing hooks, and thumbnail visual prompts in seconds.",
     }
-
 ];

@@ -9,7 +9,7 @@ const AspectRatioSelector = ({value , onChange , platformSelected} : {value : As
         '9:16' : <RectangleVertical className='size-6'/>,
     } as Record<AspectRatio , React.ReactNode>              //ReactNode means "anything React can render."
     
-    const visibleAspectRatios = platformSelected === 'Youtube' ? aspectRatios : aspectRatios.filter((ratio)=> ratio==='9:16')
+    const visibleAspectRatios = platformSelected?.toLowerCase() === 'youtube' ? aspectRatios : aspectRatios.filter((ratio)=> ratio==='9:16')
 
   return (
     <div className='space-y-3 dark'>

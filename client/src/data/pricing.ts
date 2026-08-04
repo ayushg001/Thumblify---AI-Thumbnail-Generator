@@ -6,10 +6,10 @@ export const pricingData: IPricing[] = [
         price: 29,
         period: "month",
         features: [
-            "50 AI Thumbnails/mo",
-            "Basic Templates",
-            "Standard Resolution",
-            "No Watermark",
+            "50 AI Content Packs/mo",
+            "YouTube & Instagram SEO",
+            "Viral Title Generator",
+            "Hashtag & Tag Packs",
             "Email Support"
         ],
         mostPopular: false
@@ -19,13 +19,12 @@ export const pricingData: IPricing[] = [
         price: 79,
         period: "month",
         features: [
-            "Unlimited AI Thumbnails",
-            "Premium Templates",
-            "4K Resolution",
-            "A/B Testing Tools",
-            "Priority Support",
-            "Custom Fonts",
-            "Brand Kit Analysis"
+            "Unlimited AI Content Packs",
+            "Full Video Script Outlines",
+            "Thumbnail Visual Prompts",
+            "SEO Keyword Optimizer",
+            "Priority Generation",
+            "24/7 Priority Support"
         ],
         mostPopular: true
     },
@@ -37,7 +36,7 @@ export const pricingData: IPricing[] = [
             "Everything in Pro",
             "API Access",
             "Team Collaboration",
-            "Custom Branding",
+            "Multi-Account Management",
             "Dedicated Account Manager"
         ],
         mostPopular: false

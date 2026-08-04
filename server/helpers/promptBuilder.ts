@@ -12,14 +12,18 @@ type PromptBuilder = (input: GenerateContentInput) => string;
 const buildYouTubePrompt: PromptBuilder = (input) => {
     const { videoTopic, aspectRatio, videoLength, contentGoal, additionalDetails } = input;
 
-    return `You are an expert AI content strategist and SEO specialist for YouTube.
-Generate a complete, highly engaging, production-ready SEO content pack for a YouTube video based on the following input:
+    // IMPORTANT: Unique user data placed FIRST to bust Gemini implicit cache
+    return `[REQUEST_ID: ${Date.now()}-${Math.random().toString(36).slice(2, 8)}]
 
-- Video Topic: "${videoTopic}"
-- Target Aspect Ratio: ${aspectRatio || '16:9'}
-- Desired Video Duration: ${videoLength || '5to10min'}
-- Content Goal: ${contentGoal || 'Maximize CTR'}
-${additionalDetails ? `- Additional Details / Guidelines: "${additionalDetails}"` : ''}
+VIDEO TOPIC: "${videoTopic}"
+PLATFORM: YouTube
+ASPECT RATIO: ${aspectRatio || '16:9'}
+VIDEO DURATION: ${videoLength || '5to10min'}
+CONTENT GOAL: ${contentGoal || 'Maximize CTR'}
+${additionalDetails ? `ADDITIONAL DETAILS: "${additionalDetails}"` : ''}
+
+You are an expert AI content strategist and SEO specialist for YouTube.
+Generate a complete, highly engaging, production-ready SEO content pack for the YouTube video described above.
 
 CRITICAL REQUIREMENT:
 You MUST respond ONLY with valid JSON. Do NOT include markdown blocks, text before or after, or any explanations.
@@ -45,20 +49,25 @@ Return a JSON object with EXACTLY the following structure:
   }
 }
 
-Ensure the script depth and detail directly reflect the requested duration ("${videoLength || '5to10min'}").`;
+Ensure the script depth and detail directly reflect the requested duration ("${videoLength || '5to10min'}").
+All content MUST be specifically about: "${videoTopic}". Do NOT use generic or placeholder content.`;
 };
 
 const buildInstagramPrompt: PromptBuilder = (input) => {
     const { videoTopic, aspectRatio, videoLength, contentGoal, additionalDetails } = input;
 
-    return `You are an expert Instagram content creator and viral growth strategist.
-Generate a complete, engaging SEO content pack for an Instagram Reel/Post based on the following input:
+    // IMPORTANT: Unique user data placed FIRST to bust Gemini implicit cache
+    return `[REQUEST_ID: ${Date.now()}-${Math.random().toString(36).slice(2, 8)}]
 
-- Video Topic: "${videoTopic}"
-- Aspect Ratio: ${aspectRatio || '9:16'}
-- Video Duration: ${videoLength || 'under30sec'}
-- Content Goal: ${contentGoal || 'Viral'}
-${additionalDetails ? `- Additional Details / Guidelines: "${additionalDetails}"` : ''}
+VIDEO TOPIC: "${videoTopic}"
+PLATFORM: Instagram Reel
+ASPECT RATIO: ${aspectRatio || '9:16'}
+VIDEO DURATION: ${videoLength || 'under30sec'}
+CONTENT GOAL: ${contentGoal || 'Viral'}
+${additionalDetails ? `ADDITIONAL DETAILS: "${additionalDetails}"` : ''}
+
+You are an expert Instagram content creator and viral growth strategist.
+Generate a complete, engaging SEO content pack for an Instagram Reel/Post about the topic described above.
 
 CRITICAL REQUIREMENT:
 You MUST respond ONLY with valid JSON. Do NOT include markdown blocks, text before or after, or any explanations.
@@ -78,7 +87,8 @@ Return a JSON object with EXACTLY the following structure:
   }
 }
 
-Ensure all fields are fully populated and the content is optimized for Instagram algorithms.`;
+Ensure all fields are fully populated and the content is optimized for Instagram algorithms.
+All content MUST be specifically about: "${videoTopic}". Do NOT use generic or placeholder content.`;
 };
 
 // Platform Strategy Map for scalability (LinkedIn, X/Twitter, Facebook can be added cleanly)

@@ -4,8 +4,10 @@ import { pricingData } from "../data/pricing";
 import type { IPricing } from "../types";
 import { CheckIcon } from "lucide-react";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 export default function PricingSection() {
+    const navigate = useNavigate();
     return (
         <div id="pricing" className="px-4 md:px-16 lg:px-24 xl:px-32">
             <SectionTitle text1="Pricing" text2="Simple Pricing" text3="Choose the plan that fits your creation schedule. Cancel anytime." />
@@ -31,7 +33,7 @@ export default function PricingSection() {
                                 </li>
                             ))}
                         </ul>
-                        <button type="button" className={`w-full py-2.5 rounded-md font-medium mt-7 transition-all ${plan.mostPopular ? 'bg-white text-pink-600 hover:bg-slate-200' : 'bg-pink-500 hover:bg-pink-600'}`}>
+                        <button onClick={() => navigate('/generate')} type="button" className={`w-full py-2.5 rounded-md font-medium mt-7 transition-all cursor-pointer ${plan.mostPopular ? 'bg-white text-pink-600 hover:bg-slate-200' : 'bg-pink-500 hover:bg-pink-600'}`}>
                             Get Started
                         </button>
                     </motion.div>

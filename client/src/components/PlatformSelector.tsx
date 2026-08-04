@@ -42,7 +42,7 @@ const InstagramIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   </svg>
 );
 
-export default function PlatformSelector({value,onChange,}: {value: PlatformSelect; onChange: (platform: PlatformSelect) => void ; }) {
+export default function PlatformSelector({value,onChange}: {value: PlatformSelect; onChange: (platform: PlatformSelect) => void ; }) {
 
   return (
     <div className="space-y-3">
@@ -53,7 +53,7 @@ export default function PlatformSelector({value,onChange,}: {value: PlatformSele
 
       <div className="grid grid-cols-2 gap-3">
         {platformSelect.map((platform) => {
-          const selected = value === platform;
+          const selected = value?.toLowerCase() === platform.toLowerCase();
           const isYoutube = platform.toLowerCase() === "youtube";
 
           return (
