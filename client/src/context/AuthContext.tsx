@@ -51,8 +51,9 @@ export const AuthProvider = ({children} : {children : React.ReactNode}) => {
             }
             toast.success(data.message);
 
-        } catch (error){
+        } catch (error :any){
             console.log('SignUp error' , error);
+             toast.success("Invalid Email or Password");
         }
     }
 

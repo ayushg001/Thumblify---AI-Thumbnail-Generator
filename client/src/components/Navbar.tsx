@@ -10,6 +10,17 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
 
+    const scrollToSection = (id: string) => {
+        if (window.location.pathname !== '/') {
+            navigate('/');
+            setTimeout(() => {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <>
             <motion.nav className="fixed top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur"
@@ -24,11 +35,12 @@ export default function Navbar() {
 
                 <div className="hidden md:flex items-center gap-8 transition duration-500">
                     <Link to='/' className="hover:text-pink-300 transition">Home</Link>
-                    <Link to='/generate' className="hover:text-pink-300 transition"> Generate </Link>
-                    {isLoggedIn ? <Link to='/my-generation' className="hover:text-pink-300 transition">My Generations</Link> :
-                        <Link to='#' className="hover:text-pink-300 transition"> About</Link>}
-
-                    <Link to='#' className="hover:text-pink-500 transition">Contact us</Link>
+                    <Link to='/generate' className="hover:text-pink-300 transition">Generate</Link>
+                    {isLoggedIn && (
+                        <Link to='/my-generation' className="hover:text-pink-300 transition">My Generations</Link>
+                    )}
+                    <button onClick={() => scrollToSection('features')} className="hover:text-pink-300 transition cursor-pointer">About</button>
+                    <button onClick={() => scrollToSection('contact')} className="hover:text-pink-500 transition cursor-pointer">Contact us</button>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -38,14 +50,14 @@ export default function Navbar() {
                                 {user?.name.charAt(0).toUpperCase()}
                             </button>
                             <div className="absolute hidden group-hover:block top-6 right-0 pt-4">
-                                <button onClick={() => logout()} className="bg-white/20 border-2 border-white/10 px-5 py-1.5 rounded">
+                                <button onClick={() => logout()} className="bg-white/20 border-2 border-white/10 px-5 py-1.5 rounded cursor-pointer">
                                     Logout
                                 </button>
                             </div>
                         </div>
                     ) :
                         (
-                            <button onClick={() => navigate('/login')} className="hidden md:block px-6 py-2.5 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all rounded-full">
+                            <button onClick={() => navigate('/login')} className="hidden md:block px-6 py-2.5 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all rounded-full cursor-pointer">
                                 Get Started
                             </button>
                         )}
@@ -60,16 +72,20 @@ export default function Navbar() {
             <div className={`fixed inset-0 z-100 bg-black/40 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-400 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <Link onClick={() => setIsOpen(false)} to='/' >Home</Link>
                 <Link onClick={() => setIsOpen(false)} to='/generate'> Generate </Link>
-                {isLoggedIn ? <Link onClick={() => setIsOpen(false)} to='/my-generation'> My Generations</Link>
-                    : <Link onClick={() => setIsOpen(false)} to='#'>About</Link>
-                }
+                {isLoggedIn && (
+                    <Link onClick={() => setIsOpen(false)} to='/my-generation'> My Generations</Link>
+                )}
 
-                <Link onClick={() => setIsOpen(false)} to='#'> Contact us </Link>
-                {isLoggedIn ? <button onClick={() => { setIsOpen(false); logout() }}>Logout</button>
-                    : <Link onClick={() => setIsOpen(false)} to='/login'>Login</Link>
-                }
+                <button onClick={() => { setIsOpen(false); scrollToSection('features'); }} className="cursor-pointer">About</button>
+                <button onClick={() => { setIsOpen(false); scrollToSection('contact'); }} className="cursor-pointer">Contact us</button>
 
-                <button onClick={() => setIsOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-pink-600 hover:bg-pink-700 transition text-white rounded-md flex">
+                {isLoggedIn ? (
+                    <button onClick={() => { setIsOpen(false); logout(); }} className="cursor-pointer">Logout</button>
+                ) : (
+                    <Link onClick={() => setIsOpen(false)} to='/login'>Login</Link>
+                )}
+
+                <button onClick={() => setIsOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-pink-600 hover:bg-pink-700 transition text-white rounded-md flex cursor-pointer">
                     <XIcon />
                 </button>
             </div>

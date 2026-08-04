@@ -67,13 +67,13 @@ const Login = () => {
                         <input type="password" name="password" placeholder="Password" className="w-full bg-transparent text-white placeholder-white/60 border-none outline-none" value={formData.password} onChange={handleChange} required />
                     </div>
 
-                    <div className="mt-4 text-left">
+                    {/* <div className="mt-4 text-left">
                         <button className="text-sm text-pink-400 hover:underline">
                             Forget password?
                         </button>
-                    </div>
+                    </div> */}
 
-                    <button type="submit" className="mt-2 w-full h-11 rounded-full text-white bg-pink-600 hover:bg-pink-500 transition " >
+                    <button type="submit" className="mt-8 w-full h-11 rounded-full text-white bg-pink-600 hover:bg-pink-500 transition " >
                         {state === "login" ? "Login" : "Sign up"}
                     </button>
 
